@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на свадьбу Владимира и Таи</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: #333;
+            line-height: 1.6;
+            background: #faf6f2;
+        }
+
+        /* Герой-секция */
+        .hero {
+            min-height: 100vh;
+            background: url('FNN06140_resized.jpg') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgb(0 0 0 / 31%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .invitation-text {
+            font-size: 1.3rem;
+            margin-bottom: 15.5rem;
+            font-weight: 400;
+        }
+
+        .date-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            display: inline-block;
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        /* Таймер */
+        .countdown {
+            margin-top: 2rem;
+        }
+
+        .countdown-box {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .countdown-item {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            min-width: 60px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .countdown-item small {
+            display: block;
+            font-size: 0.6rem;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+
+        /* Программа */
+        .program-section {
+            padding: 50px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .program-title {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            position: relative;
+            color: #5a3e36;
+            font-weight: 400;
+        }
+
+        .program-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 1px;
+            background: #d4a59a;
+            margin: 10px auto;
+        }
+
+        .program-list {
+            list-style: none;
+            display: inline-block;
+            text-align: left;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .program-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .program-time {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            min-width: 70px;
+            color: #5a3e36;
+            text-align: right;
+            margin-right: 15px;
+        }
+
+        .program-event {
+            position: relative;
+            padding-left: 15px;
+            text-align: left;
+            min-width: 200px;
+            font-weight: 400;
+        }
+
+        .program-event::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #d4a59a;
+        }
+
+        .location-text {
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 2rem;
+            color: #5a3e36;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Кнопка "Посмотреть на карте" с анимацией */
+        .map-button {
+            display: inline-block;
+            margin: 25px auto 0;
+            padding: 12px 25px;
+            background-color: #5a3e36;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-decoration: none;
+            font-weight: 300;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .map-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .map-button:hover {
+            background-color: #3e2b25;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .map-button:hover:before {
+            left: 100%;
+        }
+
+        .map-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .program-note {
+            font-style: italic;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(90,62,54,0.1);
+            text-align: center;
+            color: #5a3e36;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+        }
+
+        /* Компактная фотография в программе */
+        .program-photo {
+            margin: 30px auto 0;
+            width: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .program-photo img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease, filter 0.3s ease;
+        }
+
+        .program-photo:hover img {
+            transform: scale(1.05);
+            filter: brightness(1.05);
+        }
+
+        /* Слайд-шоу в координаторе */
+        .coordinator-photo {
+            margin: 30px auto;
+            width: 300px;
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .coordinator-photo img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+        }
+
+        .coordinator-photo img.active {
+            opacity: 1;
+        }
+
+        /* Координатор */
+        .coordinator-section {
+            padding: 40px 20px;
+            background: #5a3e36;
+            color: #000000;
+            text-align: center;
+        }
+
+        .coordinator-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .coordinator-title {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .coordinator-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        /* Анимированные кнопки Telegram */
+        .telegram-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #775c49;
+            color: white;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .telegram-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .telegram-button:hover {
+            background-color: #0088cc;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .telegram-button:hover:before {
+            left: 100%;
+        }
+
+        .telegram-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Блок подтверждения */
+        .confirmation-block {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .confirmation-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .confirmation-title {
+            font-size: 1.5rem;
+            color: #5a3e36;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .confirmation-text {
+            color: #5a3e36;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .confirmation-note {
+            font-style: italic;
+            color: #7a6a63;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Форма подтверждения */
+        .confirmation-form {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #5a3e36;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #d4a59a;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            color: #5a3e36;
+            background-color: #faf6f2;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #5a3e36;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .radio-input {
+            margin-right: 5px;
+        }
+
+        .children-count {
+            margin-top: 10px;
+            display: none;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #5a3e36;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-button:hover {
+            background-color: #3e2b25;
+        }
+
+        /* Контакты */
+        .contacts {
+            text-align: center;
+            margin-top: 2rem;
+            color: white;
+        }
+
+        .contacts-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .phone-link {
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .phone-link:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: #d4a59a;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+
+        .phone-link:hover {
+            color: #d4a59a;
+            transform: translateY(-2px);
+        }
+
+        .phone-link:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .heart {
+            color: #d4a59a;
+        }
+
+        /* Анимация загрузки */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-content, .program-section, .coordinator-section {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .program-section {
+            animation-delay: 0.2s;
+        }
+
+        .coordinator-section {
+            animation-delay: 0.4s;
+        }
+
+        /* Адаптация для iPhone */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+                letter-spacing: 2px;
+            }
+
+            .invitation-text {
+                font-size: 1.1rem;
+            }
+
+            .date-text {
+                font-size: 1rem;
+            }
+
+            .countdown-item {
+                min-width: 50px;
+                padding: 6px 8px;
+                font-size: 0.9rem;
+            }
+
+            .program-section {
+                padding: 40px 15px;
+            }
+
+            .program-item {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .program-time {
+                margin-bottom: 5px;
+                text-align: center;
+                margin-right: 0;
+            }
+
+            .program-event {
+                text-align: center;
+                padding-left: 0;
+            }
+
+            .program-event::before {
+                display: none;
+            }
+
+            .map-button, .telegram-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .program-photo, .coordinator-photo {
+                width: 250px;
+                height: auto;
+                margin-top: 20px;
+            }
+
+            .coordinator-photo {
+                height: 250px;
+            }
+
+            .coordinator-title {
+                font-size: 2rem;
+            }
+
+            .coordinator-text {
+                font-size: 1rem;
+            }
+
+            .confirmation-block {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Герой-секция -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Владимир & Тая</h1>
+            <p class="invitation-text">Дорогие друзья и родные!<br>Приглашаем вас разделить радость нашего торжества!</p>
+            <div class="date-text">9 мая 2025 года</div>
+            
+            <div class="countdown">
+                <p>Увидимся с Вами через:</p>
+                <div class="countdown-box">
+                    <div id="days" class="countdown-item">00<small>дней</small></div>
+                    <div id="hours" class="countdown-item">00<small>часов</small></div>
+                    <div id="minutes" class="countdown-item">00<small>минут</small></div>
+                    <div id="seconds" class="countdown-item">00<small>секунд</small></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Программа -->
+    <section class="program-section">
+        <h2 class="program-title">Программа торжества</h2>
+        <ul class="program-list">
+            <li class="program-item">
+                <span class="program-time">14:00</span>
+                <span class="program-event">Сбор гостей, фуршет</span>
+            </li>
+            <li class="program-item">
+                <span class="program-time">15:00</span>
+                <span class="program-event">Венчание</span>
+            </li>
+            <li class="program-item">
+                <span class="program-time">16:30</span>
+                <span class="program-event">Праздничный фуршет</span>
+            </li>
+            <li class="program-item">
+                <span class="program-time">18:00</span>
+                <span class="program-event">Танцы и развлечения</span>
+            </li>
+            <li class="program-item">
+                <span class="program-time">20:00</span>
+                <span class="program-event">Сладкое завершение вечера</span>
+            </li>
+        </ul>
+
+        <p class="location-text">Место проведения: Войсковый переулок, 4, Минск</p>
+        
+        <!-- Кнопка "Посмотреть на карте" -->
+        <button class="map-button" id="showMapButton">Посмотреть на карте</button>
+        
+        <p class="program-note">
+            Приятным комплиментом для нас, вместо срезанных цветочных букетов будут белые/фиолетовые орхидеи или настольные игры!
+        </p>
+        
+        <!-- Компактная фотография -->
+        <div class="program-photo">
+            <img src="FNN06066_resized.jpg" alt="Наши счастливые моменты">
+        </div>
+    </section>
+
+    <!-- Координатор -->
+    <section class="coordinator-section">
+        <div class="coordinator-container">
+            <h2 class="coordinator-title">Координатор</h2>
+            <p class="coordinator-text">
+                Если вы подготовили для нас творческое поздравление, пожалуйста, свяжитесь с нашим координатором Дарьей
+            </p>
+            
+            <a href="https://t.me/darya_buldakova" class="telegram-button" target="_blank">Написать Даше</a>
+            
+            <!-- Блок подтверждения с формой -->
+            <div class="confirmation-block">
+                <h3 class="confirmation-title">Подтверди свое присутствие до 1 мая 2025</h3>
+                <p class="confirmation-text">
+                    Пожалуйста, заполните форму ниже:
+                </p>
+                
+                <form id="weddingForm" class="confirmation-form">
+                    <div class="form-group">
+                        <label for="guestName" class="form-label">Ваше имя и фамилия*</label>
+                        <input type="text" id="guestName" name="entry.9861659" class="form-input" required placeholder="Иван Иванов">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="childrenNumber" class="form-label">Количество детей, которые будут с вами*</label>
+                        <input type="number" id="childrenNumber" name="entry.324462749" class="form-input" min="0" max="10" value="0" required>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">Подтвердить присутствие</button>
+                    <div id="loading" class="confirmation-note" style="display: none;">Отправка данных...</div>
+                </form>
+                
+                <p class="confirmation-note">После отправки формы вы будете перенаправлены в наш telegram-канал</p>
+            </div>
+            
+            <!-- Слайд-шоу фотографий -->
+            <div class="coordinator-photo">
+                <img src="2.jpg" alt="Наше фото" class="active">
+                <img src="3.jpg" alt="Наши счастливые моменты">
+                <img src="4.jpg" alt="Еще один момент">
+            </div>
+            
+            <div class="contacts">
+                <h3 class="contacts-title">Наши контакты</h3>
+                <a href="tel:+375333341392" class="phone-link">Владимир +375 (33) 334-13-92</a><br>
+                <a href="tel:+375298951490" class="phone-link">Тая +375 (29) 895-14-90</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Таймер обратного отсчета
+        function updateCountdown() {
+            const weddingDate = new Date("2025-05-09T00:00:00").getTime();
+            const now = new Date().getTime();
+            const timeLeft = weddingDate - now;
+
+            if (timeLeft <= 0) {
+                document.querySelector('.countdown').innerHTML = 
+                    '<p style="font-size:1.2rem">Свадьба состоялась! Спасибо, что были с нами!</p>';
+                return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerHTML = `${days}<small>дней</small>`;
+            document.getElementById('hours').innerHTML = `${hours}<small>часов</small>`;
+            document.getElementById('minutes').innerHTML = `${minutes}<small>минут</small>`;
+            document.getElementById('seconds').innerHTML = `${seconds}<small>секунд</small>`;
+        }
+
+        // Функция для открытия Яндекс.Карт
+        function openYandexMap() {
+            const address = "Войсковый переулок, 4, Минск";
+            const coordinates = "53.905372,27.577698";
+            
+            const yandexMapUrl = `https://yandex.by/maps/?text=${encodeURIComponent(address)}&ll=${coordinates}&z=16`;
+            window.open(yandexMapUrl, '_blank');
+            
+            navigator.clipboard.writeText(coordinates)
+                .then(() => {
+                    alert("Координаты скопированы в буфер обмена: " + coordinates);
+                })
+                .catch(err => {
+                    console.error('Не удалось скопировать координаты: ', err);
+                });
+        }
+
+        // Слайд-шоу фотографий (для координатора)
+        function initPhotoSlider() {
+            const container = document.querySelector('.coordinator-photo');
+            if (!container) return;
+            
+            const photos = container.querySelectorAll('img');
+            if (photos.length === 0) return;
+            
+            let currentIndex = 0;
+            
+            function showNextPhoto() {
+                // Скрываем текущее фото
+                photos[currentIndex].classList.remove('active');
+                
+                // Переходим к следующему фото
+                currentIndex = (currentIndex + 1) % photos.length;
+                
+                // Показываем новое фото
+                photos[currentIndex].classList.add('active');
+            }
+            
+            // Показываем первое фото сразу
+            photos[0].classList.add('active');
+            
+            // Запускаем слайд-шоу каждые 5 секунд
+            setInterval(showNextPhoto, 5000);
+        }
+
+        // Отправка формы в Google Forms
+        document.getElementById('weddingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const submitBtn = form.querySelector('.submit-button');
+            const loading = document.getElementById('loading');
+            
+            // Получаем данные формы
+            const guestName = document.getElementById('guestName').value.trim();
+            const childrenNumber = document.getElementById('childrenNumber').value;
+            
+            // Валидация
+            if (!guestName) {
+                alert('Пожалуйста, укажите ваше имя и фамилию');
+                return;
+            }
+            
+            if (isNaN(childrenNumber) || childrenNumber < 0) {
+                alert('Пожалуйста, укажите корректное количество детей');
+                return;
+            }
+            
+            // Показываем индикатор загрузки
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
+            
+            // Подготовка данных для Google Forms
+            const formData = new FormData();
+            formData.append('entry.9861659', guestName); // Имя и фамилия
+            formData.append('entry.324462749', childrenNumber); // Количество детей
+            
+            // URL вашей Google Forms
+            const googleFormsUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSc81D_raucDur-3kubLTlR7xy36BRJV4fNINQNJzuNJtkjcwg/formResponse';
+            
+            // Отправка данных
+            fetch(googleFormsUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            })
+            .then(() => {
+                // Успешная отправка
+                alert('Спасибо! Ваше присутствие подтверждено.');
+                // Перенаправление в Telegram
+                window.location.href = 'https://t.me/+ftfQLcCDLpkxYTBi';
+            })
+            .catch((error) => {
+                console.error('Ошибка:', error);
+                // Даже если ошибка, перенаправляем в Telegram
+                alert('Ваши данные получены! Сейчас вы будете перенаправлены в Telegram.');
+                window.location.href = 'https://t.me/+ftfQLcCDLpkxYTBi';
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
+            });
+        });
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            // Таймер
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+            
+            // Обработчик кнопки карты
+            document.getElementById('showMapButton').addEventListener('click', openYandexMap);
+            
+            // Инициализация слайд-шоу
+            initPhotoSlider();
+        });
+    </script>
+</body>
+</html>
