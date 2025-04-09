@@ -603,6 +603,26 @@
                 padding: 20px;
             }
         }
+
+        /* Новые стили для валидации */
+        .form-hint {
+            display: block;
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 4px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-input.error {
+            border-color: #d32f2f;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -686,16 +706,36 @@
                 <form id="weddingForm" class="confirmation-form">
                     <div class="form-group">
                         <label for="guestName" class="form-label">Ваше имя и фамилия*</label>
-                        <input type="text" id="guestName" name="entry.9861659" class="form-input" required placeholder="Иван Иванов">
+                        <input 
+                            type="text" 
+                            id="guestName" 
+                            name="entry.9861659" 
+                            class="form-input" 
+                            required 
+                            placeholder="Иван Иванов"
+                            minlength="2"
+                        >
+                        <small class="form-hint">Обязательное поле (минимум 2 символа)</small>
+                        <div id="nameError" class="error-message">Пожалуйста, введите имя и фамилию</div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="childrenNumber" class="form-label">Количество детей, если будут с вами*</label>
-                        <input type="number" id="childrenNumber" name="entry.324462749" class="form-input" min="0" max="10" value="0" required>
+                        <label for="childrenNumber" class="form-label">Количество детей (если будут с вами)</label>
+                        <input 
+                            type="number" 
+                            id="childrenNumber" 
+                            name="entry.324462749" 
+                            class="form-input" 
+                            min="0" 
+                            max="10" 
+                            value="0"
+                            step="1"
+                        >
+                        <small class="form-hint">Укажите 0, если детей не будет</small>
                     </div>
                     
-                    <button type="submit" class="submit-button">Подтвердить присутствие</button>
-                    <div id="loading" class="confirmation-note" style="display: none;">Отправка данных...</div>
+                    <button type="submit" class="submit-button" id="submitButton">Подтвердить присутствие</button>
+                    <div id="formSuccess" style="display: none; color: green; margin-top: 10px;">Спасибо! Ваше присутствие подтверждено.</div>
                 </form>
                 
                 <p class="confirmation-note">После отправки формы вы будете перенаправлены в наш telegram-канал</p>
@@ -785,63 +825,86 @@
             setInterval(showNextPhoto, 5000);
         }
 
+        // Валидация формы
+        function validateForm() {
+            const nameInput = document.getElementById('guestName');
+            const nameError = document.getElementById('nameError');
+            let isValid = true;
+
+            // Валидация имени
+            if (nameInput.value.trim().length < 2) {
+                nameInput.classList.add('error');
+                nameError.style.display = 'block';
+                isValid = false;
+            } else {
+                nameInput.classList.remove('error');
+                nameError.style.display = 'none';
+            }
+
+            return isValid;
+        }
+
         // Отправка формы в Google Forms
-        document.getElementById('weddingForm').addEventListener('submit', function(e) {
+        document.getElementById('weddingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Валидация
+            if (!validateForm()) return;
+            
             const form = e.target;
-            const submitBtn = form.querySelector('.submit-button');
-            const loading = document.getElementById('loading');
+            const submitBtn = document.getElementById('submitButton');
+            const formSuccess = document.getElementById('formSuccess');
             
             // Получаем данные формы
             const guestName = document.getElementById('guestName').value.trim();
-            const childrenNumber = document.getElementById('childrenNumber').value;
-            
-            // Валидация
-            if (!guestName) {
-                alert('Пожалуйста, укажите ваше имя и фамилию');
-                return;
-            }
-            
-            if (isNaN(childrenNumber) || childrenNumber < 0) {
-                alert('Пожалуйста, укажите корректное количество детей');
-                return;
-            }
+            const childrenNumber = document.getElementById('childrenNumber').value || "0"; // Если пусто → "0"
             
             // Показываем индикатор загрузки
             submitBtn.disabled = true;
-            loading.style.display = 'block';
+            submitBtn.textContent = 'Отправка...';
             
-            // Подготовка данных для Google Forms
-            const formData = new FormData();
-            formData.append('entry.9861659', guestName); // Имя и фамилия
-            formData.append('entry.324462749', childrenNumber); // Количество детей
-            
-            // URL вашей Google Forms
-            const googleFormsUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSc81D_raucDur-3kubLTlR7xy36BRJV4fNINQNJzuNJtkjcwg/formResponse';
-            
-            // Отправка данных
-            fetch(googleFormsUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: formData
-            })
-            .then(() => {
+            try {
+                // Подготовка данных для Google Forms
+                const formData = new FormData();
+                formData.append('entry.9861659', guestName);
+                formData.append('entry.324462749', childrenNumber);
+                
+                // Отправка данных
+                await fetch(
+                    'https://docs.google.com/forms/d/e/1FAIpQLSc81D_raucDur-3kubLTlR7xy36BRJV4fNINQNJzuNJtkjcwg/formResponse', 
+                    {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        body: formData
+                    }
+                );
+                
                 // Успешная отправка
-                alert('Спасибо! Ваше присутствие подтверждено.');
-                // Перенаправление в Telegram
-                window.location.href = 'https://t.me/+ftfQLcCDLpkxYTBi';
-            })
-            .catch((error) => {
+                formSuccess.style.display = 'block';
+                form.reset();
+                
+                // Перенаправление в Telegram через 2 секунды
+                setTimeout(() => {
+                    window.location.href = 'https://t.me/+ftfQLcCDLpkxYTBi';
+                }, 2000);
+                
+            } catch (error) {
                 console.error('Ошибка:', error);
                 // Даже если ошибка, перенаправляем в Telegram
-                alert('Ваши данные получены! Сейчас вы будете перенаправлены в Telegram.');
+                alert('Данные получены! Сейчас вы будете перенаправлены в Telegram.');
                 window.location.href = 'https://t.me/+ftfQLcCDLpkxYTBi';
-            })
-            .finally(() => {
+            } finally {
                 submitBtn.disabled = false;
-                loading.style.display = 'none';
-            });
+                submitBtn.textContent = 'Подтвердить присутствие';
+            }
+        });
+
+        // Валидация при вводе
+        document.getElementById('guestName').addEventListener('input', function() {
+            if (this.value.trim().length >= 2) {
+                this.classList.remove('error');
+                document.getElementById('nameError').style.display = 'none';
+            }
         });
 
         // Инициализация
