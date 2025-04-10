@@ -281,11 +281,50 @@
             opacity: 1;
         }
 
+        /* Библейский стих */
+        .bible-verse {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid white;
+            border-radius: 8px;
+            color: #5a3e36;
+            font-style: italic;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        .bible-verse .verse {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .bible-verse .text {
+            font-weight: 400;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Координатор */
         .coordinator-section {
             padding: 40px 20px;
             background: #5a3e36;
-            color: #000000;
+            color: white; /* Изменено на белый */
             text-align: center;
         }
 
@@ -300,12 +339,14 @@
             letter-spacing: 3px;
             margin-bottom: 1.5rem;
             font-weight: 300;
+            color: white; /* Изменено на белый */
         }
 
         .coordinator-text {
             font-size: 1.2rem;
             margin-bottom: 2rem;
             line-height: 1.8;
+            color: white; /* Изменено на белый */
         }
 
         /* Анимированные кнопки Telegram */
@@ -602,6 +643,12 @@
             .confirmation-block {
                 padding: 20px;
             }
+
+            .bible-verse {
+                width: 90%;
+                font-size: 1rem;
+                padding: 15px;
+            }
         }
 
         /* Новые стили для валидации */
@@ -746,6 +793,12 @@
                 <img src="2.jpg" alt="Наше фото" class="active">
                 <img src="3.jpg" alt="Наши счастливые моменты">
                 <img src="4.jpg" alt="Еще один момент">
+            </div>
+            
+            <!-- Библейский стих -->
+            <div class="bible-verse">
+                <div class="verse">Иоанна 15:12</div>
+                <div class="text">«Сия есть заповедь Моя, да любите друг друга, как Я возлюбил вас.»</div>
             </div>
             
             <div class="contacts">
